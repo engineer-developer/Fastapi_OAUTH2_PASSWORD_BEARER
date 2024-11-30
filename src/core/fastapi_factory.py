@@ -28,7 +28,7 @@ def create_app() -> FastAPI:
 
     fastapi_app.include_router(api_v1_router)
 
-    @fastapi_app.get("/api", response_class=ORJSONResponse, tags=["Check api"])
+    @fastapi_app.get("/api/", response_class=ORJSONResponse, tags=["Check api"])
     async def get_first():
         return {"status": "Successful run"}
 

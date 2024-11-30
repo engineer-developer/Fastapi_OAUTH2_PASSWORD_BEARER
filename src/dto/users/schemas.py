@@ -3,22 +3,22 @@ from typing import Optional
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
-class ClientBaseSchema(BaseModel):
+class UserBaseSchema(BaseModel):
     model_config = ConfigDict(strict=True)
 
     name: Optional[str]
     email: EmailStr
 
 
-class ClientCreateSchema(ClientBaseSchema):
+class UserCreateSchema(UserBaseSchema):
     password: str = Field(min_length=10)
 
 
-class ClientOutSchema(ClientBaseSchema):
+class UserOutSchema(UserBaseSchema):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
 
 
-class ClientNotFound(BaseModel):
-    detail: str = "Clients not found"
+class UserNotFound(BaseModel):
+    detail: str = "Users not found"

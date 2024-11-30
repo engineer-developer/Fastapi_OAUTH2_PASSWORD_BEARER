@@ -26,7 +26,7 @@ class Password(DatabaseModel):
     hashed_password: Mapped[str]
     salt: Mapped[str]
 
-    client: Mapped["Client"] = relationship(
+    user: Mapped["User"] = relationship(
         back_populates="password",
         lazy="select",
         cascade="all, delete-orphan",
@@ -37,10 +37,10 @@ class Password(DatabaseModel):
 # class Role
 
 
-class Client(DatabaseModel):
-    """Clients table"""
+class User(DatabaseModel):
+    """Users table"""
 
-    __tablename__ = "clients"
+    __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[Optional[str]] = None
@@ -53,7 +53,7 @@ class Client(DatabaseModel):
     )
 
     password: Mapped["Password"] = relationship(
-        back_populates="client",
+        back_populates="user",
         lazy="select",
         uselist=False,
     )
