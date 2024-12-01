@@ -1,4 +1,4 @@
-from typing import Sequence, Annotated, Optional
+from typing import Annotated, Optional, Sequence
 
 from fastapi import Depends, HTTPException, status
 from sqlalchemy import select

@@ -1,13 +1,14 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.exc import IntegrityError
 
 from src.dao.models import Password, User
-from src.database.database import CommonAsyncSession, CommonAsyncScopedSession
+from src.database.database import CommonAsyncScopedSession, CommonAsyncSession
+from src.dto.passwords.utils import create_hashed_password
 from src.dto.users.schemas import (
-    UserOutSchema,
-    UserCreateSchema,
-    ErrorDetailSchema,
     DeleteConfirmSchema,
+    ErrorDetailSchema,
+    UserCreateSchema,
+    UserOutSchema,
     UserUpdateSchema,
 )
 from src.dto.users.utils import (
@@ -15,8 +16,6 @@ from src.dto.users.utils import (
     fetch_user_by_id,
     get_current_active_user,
 )
-from src.dto.passwords.utils import create_hashed_password
-
 
 router = APIRouter(
     prefix="/users",

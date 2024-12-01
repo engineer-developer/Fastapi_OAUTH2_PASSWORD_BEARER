@@ -9,7 +9,6 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 
-
 root_path = Path(__file__).parent.parent.parent.resolve().as_posix()
 sys.path.insert(0, root_path)
 

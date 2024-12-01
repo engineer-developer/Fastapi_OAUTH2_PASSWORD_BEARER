@@ -1,10 +1,7 @@
 import enum
 from typing import Optional
 
-from sqlalchemy import (
-    ForeignKey,
-    UniqueConstraint,
-)
+from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base_model import DatabaseModel

@@ -1,16 +1,16 @@
 from asyncio import current_task
-from sqlalchemy.ext.asyncio import (
-    create_async_engine,
-    async_sessionmaker,
-    AsyncSession,
-    AsyncConnection,
-    async_scoped_session,
-)
-from fastapi import Depends
 from typing import Annotated
 
-from config.config import settings
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import (
+    AsyncConnection,
+    AsyncSession,
+    async_scoped_session,
+    async_sessionmaker,
+    create_async_engine,
+)
 
+from src.config.config import settings
 
 engine = create_async_engine(url=settings.db.url, echo=True)
 
