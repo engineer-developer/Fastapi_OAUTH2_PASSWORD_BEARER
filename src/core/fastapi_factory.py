@@ -7,8 +7,8 @@ from fastapi.responses import ORJSONResponse
 def create_app() -> FastAPI:
     from src.database.utils import alembic_upgrade_head
     from src.api.v1 import router as api_v1_router
-    from auth.oauth2_password_bearer.crud import (
-        router as auth_router_OAuth2_Password_Bearer,
+    from src.auth.crud import (
+        router as auth_router,
     )
 
     @asynccontextmanager
@@ -21,7 +21,7 @@ def create_app() -> FastAPI:
     fastapi_app = FastAPI(
         lifespan=lifespan,
         default_response_class=ORJSONResponse,
-        title="Authentication samples",
+        title="Authentication sample",
         description="__FastAPI_Authentication__",
         version="0.0.1",
         docs_url="/docs",
@@ -30,6 +30,6 @@ def create_app() -> FastAPI:
     )
 
     fastapi_app.include_router(api_v1_router)
-    fastapi_app.include_router(auth_router_OAuth2_Password_Bearer)
+    fastapi_app.include_router(auth_router)
 
     return fastapi_app
