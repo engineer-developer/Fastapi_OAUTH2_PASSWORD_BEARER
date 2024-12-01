@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from sqlalchemy.exc import IntegrityError
 
 from src.dao.models import Password, User
-from src.database.database import CommonAsyncSession
+from src.database.database import CommonAsyncSession, CommonAsyncScopedSession
 from src.dto.users.schemas import (
     UserOutSchema,
     UserCreateSchema,
@@ -118,7 +118,11 @@ async def delete_user(
     """Delete user from database"""
 
     user = await fetch_user_by_id(session, user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+        )
     await session.delete(user)
     await session.commit()
-
     return {"deleted": "True"}

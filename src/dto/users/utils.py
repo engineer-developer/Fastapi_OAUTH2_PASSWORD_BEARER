@@ -1,13 +1,13 @@
-from typing import Sequence, Annotated
+from typing import Sequence, Annotated, Optional
 
 from fastapi import Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
-from auth.oauth2_password_bearer import oauth2_scheme
-from dao.models import User
-from database.database import CommonAsyncScopedSession
+from src.auth.oauth2_password_bearer.schemas import oauth2_scheme
+from src.dao.models import User
+from src.database.database import CommonAsyncScopedSession
 
 
 async def fetch_all_users(session: AsyncSession) -> Sequence[User]:
@@ -20,7 +20,7 @@ async def fetch_all_users(session: AsyncSession) -> Sequence[User]:
     return users
 
 
-async def fetch_user_by_id(session: AsyncSession, id: int) -> User:
+async def fetch_user_by_id(session: AsyncSession, id: int) -> Optional[User]:
     """Fetch user by id from database"""
 
     stmt = select(User).where(User.id == id)
