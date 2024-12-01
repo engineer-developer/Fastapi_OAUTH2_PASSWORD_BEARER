@@ -1,6 +1,12 @@
+import enum
 from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
+
+
+class Role(str, enum.Enum):
+    admin = "admin"
+    client = "client"
 
 
 class UserBaseSchema(BaseModel):
@@ -8,6 +14,7 @@ class UserBaseSchema(BaseModel):
 
     name: Optional[str]
     email: EmailStr
+    role: Role = Field(default=Role.client)
 
 
 class UserCreateSchema(UserBaseSchema):
