@@ -7,6 +7,7 @@ from fastapi.responses import ORJSONResponse
 def create_app() -> FastAPI:
     from src.database.utils import alembic_upgrade_head
     from src.api.v1 import router as api_v1_router
+    from src.auth.crud import router as auth_router_OAuth2_Password_Bearer
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
@@ -27,9 +28,6 @@ def create_app() -> FastAPI:
     )
 
     fastapi_app.include_router(api_v1_router)
-
-    @fastapi_app.get("/api/", response_class=ORJSONResponse, tags=["Check api"])
-    async def get_first():
-        return {"status": "Successful run"}
+    fastapi_app.include_router(auth_router_OAuth2_Password_Bearer)
 
     return fastapi_app
