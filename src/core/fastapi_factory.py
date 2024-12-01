@@ -18,8 +18,8 @@ def create_app() -> FastAPI:
     fastapi_app = FastAPI(
         lifespan=lifespan,
         default_response_class=ORJSONResponse,
-        title="Basic auth sample",
-        description="__FastAPI_basic_auth__",
+        title="Authentication samples",
+        description="__FastAPI_Authentication__",
         version="0.0.1",
         docs_url="/docs",
         redoc_url="/redoc",
