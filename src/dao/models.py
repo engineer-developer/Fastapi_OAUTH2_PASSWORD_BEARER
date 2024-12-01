@@ -35,7 +35,7 @@ class User(DatabaseModel):
     __table_args__ = (UniqueConstraint("password_id"),)
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[Optional[str]] = None
+    username: Mapped[Optional[str]]
     email: Mapped[str] = mapped_column(unique=True)
     role: Mapped[Role]
     is_active: Mapped[bool] = mapped_column(default=True)

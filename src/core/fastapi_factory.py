@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from typing import Callable, Never, AsyncIterator
 
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
@@ -10,7 +11,7 @@ def create_app() -> FastAPI:
     from src.database.utils import alembic_upgrade_head
 
     @asynccontextmanager
-    async def lifespan(app: FastAPI):
+    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         is_successful_upgrade = alembic_upgrade_head()
         if not is_successful_upgrade:
             exit(1)

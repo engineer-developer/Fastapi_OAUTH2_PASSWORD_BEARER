@@ -1,5 +1,5 @@
 from asyncio import current_task
-from typing import Annotated
+from typing import Annotated, AsyncGenerator, AsyncIterator
 
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import (
@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import (
     async_scoped_session,
     async_sessionmaker,
     create_async_engine,
+    AsyncEngine,
 )
 
 from src.config.config import settings
@@ -27,17 +28,20 @@ scoped_session = async_scoped_session(
 )
 
 
-async def get_session():
+async def get_session() -> AsyncIterator[AsyncSession]:
+    """Async session generator"""
     async with async_session() as session:
         yield session
 
 
-async def get_scoped_session():
+async def get_scoped_session() -> AsyncIterator[AsyncSession]:
+    """Async scoped session generator"""
     async with scoped_session() as session:
         yield session
 
 
-async def get_engine() -> AsyncConnection:
+async def get_engine() -> AsyncIterator[AsyncConnection]:
+    """Async connection generator"""
     async with engine.begin() as connection:
         yield connection
 

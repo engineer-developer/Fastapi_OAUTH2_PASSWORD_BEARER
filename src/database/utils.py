@@ -1,10 +1,10 @@
 import subprocess
 from pathlib import Path
 
-from loggers.loggers import logger
+from src.loggers.loggers import logger
 
 
-def alembic_upgrade_head():
+def alembic_upgrade_head() -> bool:
     alembic_upgrade_command = "alembic upgrade head"
     alembic_work_dir = Path(__file__).parent.parent.resolve().as_posix()
 

@@ -1,8 +1,11 @@
+from typing import Sequence, Optional
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.exc import IntegrityError
 
+from src.dao.models import User
 from src.dao.models import Password, User
-from src.database.database import CommonAsyncScopedSession, CommonAsyncSession
+from src.database.database import CommonAsyncSession
 from src.dto.passwords.utils import create_hashed_password
 from src.dto.users.schemas import (
     DeleteConfirmSchema,
@@ -23,6 +26,11 @@ router = APIRouter(
     dependencies=[Depends(get_current_active_user)],
 )
 
+user_not_found_exception = HTTPException(
+    status_code=status.HTTP_404_NOT_FOUND,
+    detail="Users not found",
+)
+
 
 @router.get(
     "",
@@ -36,16 +44,12 @@ router = APIRouter(
 )
 async def get_all_users(
     session: CommonAsyncSession,
-):
+) -> Sequence[User]:
     """Get all users from database"""
 
     users_orm = await fetch_all_users(session)
-
     if not users_orm:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Users not found",
-        )
+        raise user_not_found_exception
     return users_orm
 
 
@@ -53,10 +57,12 @@ async def get_all_users(
 async def get_user_by_id(
     session: CommonAsyncSession,
     user_id: int,
-):
+) -> Optional[User]:
     """Get user by id from database"""
 
     user = await fetch_user_by_id(session, user_id)
+    if not user:
+        raise user_not_found_exception
     return user
 
 
@@ -74,7 +80,7 @@ async def get_user_by_id(
 async def add_new_user(
     session: CommonAsyncSession,
     user: UserCreateSchema,
-):
+) -> Optional[User]:
     """Add new user to database"""
     try:
         async with session.begin():
@@ -90,9 +96,12 @@ async def add_new_user(
     except IntegrityError as exc:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=f"{exc.orig.args.__str__()}",
+            detail=f"{
+                exc.orig.args.__str__().rsplit(sep=":")[-1].strip(".',) ") 
+                if exc.orig 
+                else exc.__repr__()
+            }",
         )
-
     return new_user_orm
 
 
@@ -101,8 +110,11 @@ async def update_partial_user(
     session: CommonAsyncSession,
     user_id: int,
     updated_user: UserUpdateSchema,
-):
+) -> Optional[User]:
     user = await fetch_user_by_id(session, user_id)
+    if not user:
+        raise user_not_found_exception
+
     for name, value in updated_user.model_dump(exclude_unset=True).items():
         setattr(user, name, value)
     await session.commit()
@@ -113,15 +125,12 @@ async def update_partial_user(
 async def delete_user(
     session: CommonAsyncSession,
     user_id: int,
-):
+) -> dict[str, str]:
     """Delete user from database"""
 
     user = await fetch_user_by_id(session, user_id)
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found",
-        )
+        raise user_not_found_exception
     await session.delete(user)
     await session.commit()
     return {"deleted": "True"}

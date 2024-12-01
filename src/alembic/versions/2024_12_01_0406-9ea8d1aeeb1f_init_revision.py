@@ -1,7 +1,7 @@
 """Init revision
 
 Revision ID: 9ea8d1aeeb1f
-Revises: 
+Revises:
 Create Date: 2024-12-01 04:06:38.507551
 
 """
@@ -32,7 +32,11 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("username", sa.String(), nullable=True),
         sa.Column("email", sa.String(), nullable=False),
-        sa.Column("role", sa.Enum("admin", "client", name="role"), nullable=False),
+        sa.Column(
+            "role",
+            sa.Enum("admin", "client", name="role"),
+            nullable=False,
+        ),
         sa.Column("is_active", sa.Boolean(), nullable=False),
         sa.Column("password_id", sa.Integer(), nullable=False),
         sa.ForeignKeyConstraint(

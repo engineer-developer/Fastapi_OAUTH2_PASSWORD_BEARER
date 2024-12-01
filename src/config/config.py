@@ -15,7 +15,7 @@ class DatabaseConfig(BaseModel):
     name: str
 
     @property
-    def url(self):
+    def url(self) -> str:
         return "postgresql+asyncpg://{}:{}@{}:{}/{}".format(
             self.user,
             self.password,
@@ -31,12 +31,11 @@ class Settings(BaseSettings):
         case_sensitive=False,
         env_nested_delimiter="__",
     )
-
     db: DatabaseConfig
 
 
 @lru_cache
-def get_settings():
+def get_settings() -> Settings:
     return Settings()
 
 

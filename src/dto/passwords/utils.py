@@ -39,7 +39,10 @@ async def create_hashed_password(
 ) -> Password:
     """Create instance of Password"""
 
-    hashed_password, salt = await make_hashed_password(session, password=password)
+    hashed_password, salt = await make_hashed_password(
+        session,
+        password=password,
+    )
 
     new_password_schema = PasswordCreateSchema(
         hashed_password=hashed_password,
