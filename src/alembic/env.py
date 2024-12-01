@@ -12,8 +12,8 @@ from alembic import context
 root_path = Path(__file__).parent.parent.parent.resolve().as_posix()
 sys.path.insert(0, root_path)
 
-from src.config.config import settings
-from src.dao.models import DatabaseModel
+from src.config.config import settings  # noqa:E402
+from src.dao.models import DatabaseModel  # noqa:E402
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

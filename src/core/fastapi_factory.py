@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from typing import Callable, Never, AsyncIterator
+from typing import AsyncIterator
 
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse

@@ -3,7 +3,6 @@ from typing import Sequence, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.exc import IntegrityError
 
-from src.dao.models import User
 from src.dao.models import Password, User
 from src.database.database import CommonAsyncSession
 from src.dto.passwords.utils import create_hashed_password
@@ -97,8 +96,8 @@ async def add_new_user(
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"{
-                exc.orig.args.__str__().rsplit(sep=":")[-1].strip(".',) ") 
-                if exc.orig 
+                exc.orig.args.__str__().rsplit(sep=":")[-1].strip(".',) ")
+                if exc.orig
                 else exc.__repr__()
             }",
         )

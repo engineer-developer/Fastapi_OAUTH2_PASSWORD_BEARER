@@ -1,5 +1,5 @@
 from asyncio import current_task
-from typing import Annotated, AsyncGenerator, AsyncIterator
+from typing import Annotated, AsyncIterator
 
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import (
@@ -8,7 +8,6 @@ from sqlalchemy.ext.asyncio import (
     async_scoped_session,
     async_sessionmaker,
     create_async_engine,
-    AsyncEngine,
 )
 
 from src.config.config import settings
