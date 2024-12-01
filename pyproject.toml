@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "basic-auth"
+name = "Fastapi-Authentication"
 version = "0.1.0"
 description = ""
 authors = ["Suslov Alexey <suslov.lexx@gmail.com>"]
