@@ -18,7 +18,6 @@ async def make_hashed_password(
         salt = uuid.uuid4().hex
     mix = (password + salt).encode()
     hashed_password = hashlib.sha512(mix).hexdigest()
-
     return hashed_password, salt
 
 
@@ -47,5 +46,4 @@ async def create_hashed_password(
         salt=salt,
     )
     new_password_orm = Password(**new_password_schema.model_dump())
-
     return new_password_orm
