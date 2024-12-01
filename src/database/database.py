@@ -1,8 +1,10 @@
+from asyncio import current_task
 from sqlalchemy.ext.asyncio import (
     create_async_engine,
     async_sessionmaker,
     AsyncSession,
     AsyncConnection,
+    async_scoped_session,
 )
 from fastapi import Depends
 from typing import Annotated
@@ -19,9 +21,19 @@ async_session = async_sessionmaker(
     class_=AsyncSession,
 )
 
+scoped_session = async_scoped_session(
+    session_factory=async_session,
+    scopefunc=current_task,
+)
+
 
 async def get_session():
     async with async_session() as session:
+        yield session
+
+
+async def get_scoped_session():
+    async with scoped_session() as session:
         yield session
 
 
@@ -31,4 +43,5 @@ async def get_engine() -> AsyncConnection:
 
 
 CommonAsyncSession = Annotated[AsyncSession, Depends(get_session)]
+CommonAsyncScopedSession = Annotated[AsyncSession, Depends(get_scoped_session)]
 CommonAsyncEngine = Annotated[AsyncConnection, Depends(get_engine)]
