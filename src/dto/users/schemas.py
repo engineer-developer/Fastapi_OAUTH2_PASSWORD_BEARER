@@ -34,5 +34,6 @@ class UserOutSchema(UserBaseSchema):
 class DeleteConfirmSchema(BaseModel):
     deleted: bool
 
-class UserNotFound(BaseModel):
-    detail: str = "Users not found"
+
+class ErrorDetailSchema(BaseModel):
+    detail: str
