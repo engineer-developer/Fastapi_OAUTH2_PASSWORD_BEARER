@@ -30,6 +30,8 @@ class UserOutSchema(UserBaseSchema):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
+    is_active: bool
+
 
 class DeleteConfirmSchema(BaseModel):
     deleted: bool
