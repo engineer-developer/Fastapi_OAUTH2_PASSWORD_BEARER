@@ -19,6 +19,13 @@ class UserCreateSchema(UserBaseSchema):
     password: str = Field(min_length=10)
 
 
+class UserUpdateSchema(BaseModel):
+    username: Optional[str] = None
+    email: Optional[EmailStr] = None
+    role: Optional[Role] = None
+    is_active: Optional[bool] = None
+
+
 class UserOutSchema(UserBaseSchema):
     model_config = ConfigDict(from_attributes=True)
 
