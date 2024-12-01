@@ -10,9 +10,7 @@ class Role(str, enum.Enum):
 
 
 class UserBaseSchema(BaseModel):
-    model_config = ConfigDict(strict=True)
-
-    name: Optional[str]
+    username: Optional[str]
     email: EmailStr
     role: Role = Field(default=Role.client)
 
