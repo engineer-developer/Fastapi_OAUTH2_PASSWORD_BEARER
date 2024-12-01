@@ -38,6 +38,13 @@ env_files = ["src/.test.env"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "session"
 
+[tool.mypy]
+warn_return_any = true
+warn_unused_configs = true
+disable_error_code = [
+    "call-arg",
+    "attr-defined",
+]
 
 [tool.isort]
 profile = "black"
