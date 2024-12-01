@@ -7,7 +7,9 @@ from fastapi.responses import ORJSONResponse
 def create_app() -> FastAPI:
     from src.database.utils import alembic_upgrade_head
     from src.api.v1 import router as api_v1_router
-    from src.auth.crud import router as auth_router_OAuth2_Password_Bearer
+    from auth.oauth2_password_bearer.crud import (
+        router as auth_router_OAuth2_Password_Bearer,
+    )
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
