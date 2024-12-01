@@ -1,4 +1,4 @@
-name: basic_auth
+name: fastapi_auth
 
 services:
 
