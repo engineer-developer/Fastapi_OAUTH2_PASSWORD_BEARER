@@ -41,9 +41,9 @@
 >
 > `python src/loader.py`
 
->### For logging as admin
+>### Logging as admin
 >##### You can log as admin with follow credentials
 >* username = user@example.com
 >* password = 1234567890
 
->### The tests are not ready yet
+>### The tests are implemented with pytest
