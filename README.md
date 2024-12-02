@@ -39,8 +39,9 @@
 >### Run project
 >##### You can run project with shell-command
 >
-> `python src/loader.py`
-
+>```
+>python src/loader.py
+>```
 >### Logging as admin
 >##### You can log as admin with follow credentials
 >* username = user@example.com
