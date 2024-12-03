@@ -1,10 +1,9 @@
 from typing import Optional
 
-import pytest
 from httpx import AsyncClient
 from sqlalchemy import select
 
-from dao.models import User
+from src.dao.models import User
 from tests.conftest import (
     async_client,
     async_session,
@@ -19,7 +18,6 @@ async def test_can_get_api_version(async_client: AsyncClient):
     assert response.status_code == 200, f"Url {url} not reachable"
 
 
-@pytest.mark.usefixtures("login")
 class TestUsers:
     """Tests for all users endpoints"""
 
@@ -47,34 +45,33 @@ class TestUsers:
 
     @classmethod
     async def test_can_get_all_users(
-        cls,
-        async_client: AsyncClient,
-        auth_data,
+            cls,
+            async_client: AsyncClient,
+            login,
     ):
         """Test - client can get all users with logging"""
 
         url = "/api/users"
         headers = dict(
-            Authorization="Bearer {}".format(auth_data.get("username")),
+            Authorization="Bearer {}".format(login),
         )
         response = await async_client.get(url, headers=headers)
         assert response.status_code == 200
 
     @classmethod
     async def test_can_add_new_user_to_db(
-        cls,
-        async_client: AsyncClient,
-        new_user,
-        auth_data,
+            cls,
+            async_client: AsyncClient,
+            new_user,
+            login,
     ):
         """Test client can add new user to database"""
 
         async with async_session() as session:
             user_count_before = await cls.fetch_users_count(session)
-            print(f"{user_count_before=}")
             url = "/api/users"
             headers = dict(
-                Authorization="Bearer {}".format(auth_data.get("username")),
+                Authorization="Bearer {}".format(login),
             )
             response = await async_client.post(
                 url,
@@ -84,43 +81,40 @@ class TestUsers:
             assert response.status_code == 201
             assert response.json()["id"] == 2
             user_count_after = await cls.fetch_users_count(session)
-            print(f"{user_count_after=}")
             assert user_count_after - user_count_before == 1
 
     @classmethod
     async def test_can_get_user_by_id(
-        cls,
-        async_client: AsyncClient,
-        auth_data,
+            cls,
+            async_client: AsyncClient,
+            login,
     ):
         """Test - client can get user by id"""
         user_id = 2
         url = f"/api/users/{user_id}"
         headers = dict(
-            Authorization="Bearer {}".format(auth_data.get("username")),
+            Authorization="Bearer {}".format(login),
         )
         response = await async_client.get(url, headers=headers)
         assert response.status_code == 200
 
     @classmethod
     async def test_can_delete_user_from_db(
-        cls,
-        async_client: AsyncClient,
-        auth_data,
+            cls,
+            async_client: AsyncClient,
+            login,
     ):
         """Test client can delete user from database"""
 
         async with async_session() as session:
             user_count_before = await cls.fetch_users_count(session)
-            print(f"{user_count_before=}")
             user_id = 2
             url = f"/api/users/{user_id}"
             headers = dict(
-                Authorization="Bearer {}".format(auth_data.get("username")),
+                Authorization="Bearer {}".format(login),
             )
             response = await async_client.delete(url, headers=headers)
             assert response.status_code == 200
-            assert response.json()["deleted"] is True
+            assert response.json().get("deleted") is True
             user_count_after = await cls.fetch_users_count(session)
-            print(f"{user_count_after=}")
             assert user_count_before - user_count_after == 1

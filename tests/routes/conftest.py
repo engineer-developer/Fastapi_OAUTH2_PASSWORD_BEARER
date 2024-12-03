@@ -1,8 +1,10 @@
+from typing import Optional
+
 import pytest
 from httpx import AsyncClient
 
 
-@pytest.fixture
+@pytest.fixture(scope="class")
 async def auth_data():
     return {
         "grant_type": "password",
@@ -11,14 +13,14 @@ async def auth_data():
     }
 
 
-@pytest.fixture
-async def login(async_client: AsyncClient, auth_data):
+@pytest.fixture(scope="class")
+async def login(async_client: AsyncClient, auth_data) -> Optional[str]:
     auth_url = "/token"
     auth_headers = {"Content-type": "application/x-www-form-urlencoded"}
     auth_response = await async_client.post(
         auth_url, data=auth_data, headers=auth_headers
     )
-    assert auth_response.status_code == 200
+    return auth_response.json().get("access_token")
 
 
 @pytest.fixture
