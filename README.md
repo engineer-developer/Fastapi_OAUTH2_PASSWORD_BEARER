@@ -37,14 +37,19 @@
 >* You must create and fill in the **.env** file by analogy with the **.env.template** file
 
 >### Run project
->##### You can run project with shell-command
+>##### You can run project with shell-command:
 >
 >```
 >python src/loader.py
 >```
 >### Logging as admin
->##### You can log as admin with follow credentials
+>##### You can log as admin with follow credentials:
 >* username = user@example.com
 >* password = 1234567890
 
 >### The tests are implemented with pytest
+> ##### To be able to run tests you should have database with name "*pytest_db*".
+>* Example SQL commands to create database:
+>```
+>CREATE DATABASE "pytest_db";
+>```
