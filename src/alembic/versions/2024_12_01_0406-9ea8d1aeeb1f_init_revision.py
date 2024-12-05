@@ -10,6 +10,7 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy import TableClause
 
 
 # revision identifiers, used by Alembic.
@@ -51,18 +52,21 @@ def upgrade() -> None:
     )
 
     def insert_value_in_table(table: TableClause, value: dict):
-        op.bulk_insert(table, [value, ])
+        op.bulk_insert(
+            table,
+            [value],
+        )
 
     password_value = {
         "hashed_password": "bf91848c83fd4bd1928ed18083b441064e7918a4275c6aaf7f9865ef4c7bde2c67692b5a4f207abe0820fc1c91a3824938d1d265e9d3943ac89a9e9abe923327",
-        "salt": "ecb91d1e2b644bf3812ec7de603c10e5"
+        "salt": "ecb91d1e2b644bf3812ec7de603c10e5",
     }
     user_value = {
         "username": "some_user",
         "email": "user@example.com",
         "role": "admin",
         "is_active": True,
-        "password_id": 1
+        "password_id": 1,
     }
     insert_value_in_table(passwords_table, password_value)
     insert_value_in_table(users_table, user_value)
