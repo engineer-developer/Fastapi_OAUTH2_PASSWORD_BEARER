@@ -10,7 +10,6 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy import TableClause
 
 
 # revision identifiers, used by Alembic.
@@ -72,4 +71,4 @@ def upgrade() -> None:
 def downgrade() -> None:
     op.drop_table("users")
     op.drop_table("passwords")
-    op.execute(sqltext="DROP TYPE role;")
+    op.execute("DROP TYPE role;")
