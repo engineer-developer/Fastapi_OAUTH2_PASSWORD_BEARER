@@ -5,6 +5,8 @@ from src.loggers.loggers import logger
 
 
 def alembic_upgrade_head() -> bool:
+    """Run alembic upgrade with shell-command"""
+
     alembic_upgrade_command = "alembic upgrade head"
     alembic_work_dir = Path(__file__).parent.parent.resolve().as_posix()
 
