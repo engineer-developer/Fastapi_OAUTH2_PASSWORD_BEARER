@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from fastapi.responses import ORJSONResponse
 
-from src.dto.users.crud import router as users_router
+from src.dto.users.routers import router as users_router
 
 router = APIRouter(prefix="/api")
 

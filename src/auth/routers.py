@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from src.database.database import CommonAsyncScopedSession
-from src.dto.passwords.utils import is_correct_password
+from src.auth.utils import is_correct_password
 from src.dto.users.utils import fetch_user_by_email
 
 router = APIRouter(tags=["Auth"])
@@ -15,7 +15,10 @@ async def login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session: CommonAsyncScopedSession,
 ) -> dict[str, str]:
-    """Get credentials from form-data"""
+    """
+    Get credentials from form-data
+    In this case uses "Content-type": "application/x-www-form-urlencoded"
+    """
 
     given_email = form_data.username
     given_password = form_data.password

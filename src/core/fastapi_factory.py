@@ -7,7 +7,7 @@ from fastapi.responses import ORJSONResponse
 
 def create_app() -> FastAPI:
     from src.api.v1 import router as api_v1_router
-    from src.auth.crud import router as auth_router
+    from src.auth.routers import router as auth_router
     from src.database.utils import alembic_upgrade_head
 
     @asynccontextmanager

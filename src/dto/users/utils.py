@@ -40,30 +40,3 @@ async def fetch_user_by_email(
     result = await session.execute(stmt)
     user = result.scalar_one_or_none()
     return user
-
-
-async def get_current_user(
-    session: CommonAsyncScopedSession,
-    token: Annotated[str, Depends(oauth2_scheme)],
-) -> Optional[User]:
-    """Get current login user"""
-
-    user = await fetch_user_by_email(session, token)
-
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    return user
-
-
-async def get_current_active_user(
-    current_user: Annotated[User, Depends(get_current_user)],
-) -> Optional[User]:
-    """Get current active login user"""
-
-    if not current_user.is_active:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user

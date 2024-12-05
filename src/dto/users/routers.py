@@ -3,9 +3,10 @@ from typing import Sequence, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.exc import IntegrityError
 
+from src.auth.utils import get_current_active_user
 from src.dao.models import Password, User
 from src.database.database import CommonAsyncSession
-from src.dto.passwords.utils import create_hashed_password
+from src.dto.passwords.utils import create_password_instance
 from src.dto.users.schemas import (
     DeleteConfirmSchema,
     ErrorDetailSchema,
@@ -16,7 +17,6 @@ from src.dto.users.schemas import (
 from src.dto.users.utils import (
     fetch_all_users,
     fetch_user_by_id,
-    get_current_active_user,
 )
 
 router = APIRouter(
@@ -83,7 +83,7 @@ async def add_new_user(
     """Add new user to database"""
     try:
         async with session.begin():
-            new_password_orm: Password = await create_hashed_password(
+            new_password_orm: Password = await create_password_instance(
                 session,
                 user.password,
             )
