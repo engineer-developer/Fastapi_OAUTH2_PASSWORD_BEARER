@@ -31,7 +31,6 @@ async def login(
         )
 
     password_is_valid = await is_correct_password(
-        session=session,
         hashed_pw=user.password.hashed_password,
         salt=user.password.salt,
         password=given_password,

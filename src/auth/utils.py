@@ -12,7 +12,6 @@ from src.dto.users.utils import fetch_user_by_email
 
 
 async def make_hashed_password(
-    session: AsyncSession,
     password: str,
     salt: str | None = None,
 ) -> tuple[str, str]:
@@ -26,14 +25,13 @@ async def make_hashed_password(
 
 
 async def is_correct_password(
-    session: AsyncSession,
     hashed_pw: str,
     salt: str,
     password: str,
 ) -> bool:
     """Check equality given password with hashed password"""
 
-    result = await make_hashed_password(session, password, salt)
+    result = await make_hashed_password(password, salt)
     return hashed_pw == result[0]
 
 

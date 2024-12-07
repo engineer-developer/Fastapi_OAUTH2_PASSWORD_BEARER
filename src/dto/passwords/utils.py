@@ -12,7 +12,6 @@ async def create_password_instance(
     """Create instance of Password"""
 
     hashed_password, salt = await make_hashed_password(
-        session,
         password=password,
     )
 
